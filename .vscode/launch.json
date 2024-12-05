@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/AdventCli/bin/Debug/net9.0/AdventCli.dll",
+            "args": ["${input:Day}"],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+    ],
+    "inputs": [
+        {
+            "id": "Day",
+            "type": "pickString",
+            "description": "Which day do you wish to run",
+            "options": ["1"]
+        }
+    ]
+}
