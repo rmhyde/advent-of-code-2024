@@ -2,7 +2,7 @@ using Days.Common;
 
 namespace Days;
 
-public class Day1
+public static class Day1
 {
     public static void Run() {
         PartOne("./Days/Data/1.S.txt");

@@ -8,6 +8,7 @@ public class Program
     static void Main(string[] args)
     {
         Console.WriteLine($"Starting Day {args[0]}");
-        Day1.Run();
+        Day2.Run();
+        
     }
 }
