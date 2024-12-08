@@ -6,7 +6,7 @@
             "request": "launch",
             "preLaunchTask": "dotnet: build",
             "program": "${workspaceFolder}/AdventCli/bin/Debug/net9.0/AdventCli.dll",
-            "args": ["${input:Day}"],
+            "args": [""],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"

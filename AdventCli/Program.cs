@@ -7,8 +7,7 @@ public class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine($"Starting Day {args[0]}");
-        Day2.Run();
+        Day3.Run();
         
     }
 }
