@@ -7,7 +7,7 @@ public class Program
 {
     static void Main(string[] args)
     {
-        Day4.Run();
+        Day14.Run();
         
     }
 }

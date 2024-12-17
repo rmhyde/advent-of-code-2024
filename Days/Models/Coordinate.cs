@@ -127,4 +127,9 @@ public class Coordinate
         var yDiff = first.Y > second.Y ? first.Y - second.Y : second.Y - first.Y;
         return xDiff + yDiff;
     }
+
+    override public string ToString()
+    {
+        return $"{X}:{Y}";
+    }
 }
