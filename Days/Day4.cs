@@ -110,7 +110,10 @@ public static class Day4
 
     public static Grid<char> GetGrid(string filename)
     {
-        var grid = new Grid<char>('.');
+        var grid = new Grid<char>()
+        {
+            DefaultValue = '.'
+        };
 
         var y = 0;
         foreach (var line in AdventDay.ReadFromFile(filename))
@@ -118,7 +121,7 @@ public static class Day4
             var x = 0;
             foreach (var col in line)
             {
-                grid.Add(x, y, col);
+                grid.Set(x, y, col);
                 x++;
             }
             y++;
