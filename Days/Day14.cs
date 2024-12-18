@@ -9,8 +9,8 @@ public static class Day14
 {
     public static void Run()
     {
-        //PartOne("./Days/Data/14.S.txt", 11, 7);
-        //PartOne("./Days/Data/14.txt", 101, 103);
+        PartOne("./Days/Data/14.S.txt", 11, 7);
+        PartOne("./Days/Data/14.txt", 101, 103);
         PartTwo("./Days/Data/14.txt", 101, 103);
     }
 
