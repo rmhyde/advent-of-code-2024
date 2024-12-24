@@ -12,6 +12,10 @@ public class Coordinate
         Y = double.Parse(coordinates[1]);
     }
 
+    public Coordinate()
+    {
+    }
+
     public Coordinate(double x, double y)
     {
         X = x;
@@ -31,9 +35,21 @@ public class Coordinate
         Move(this, direction);
     }
 
+    public Coordinate Peek(Direction direction)
+    {
+        var coord = new Coordinate(ToString());
+        Move(coord, direction);
+        return coord;
+    }
+
     public double X { get; set; }
 
     public double Y { get; set; }
+
+    public void Move(Direction direction)
+    {
+        Move(this, direction);
+    }
 
     public override int GetHashCode()
     {
@@ -132,4 +148,5 @@ public class Coordinate
     {
         return $"{X}:{Y}";
     }
+
 }
