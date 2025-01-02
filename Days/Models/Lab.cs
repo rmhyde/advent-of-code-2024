@@ -7,14 +7,11 @@ namespace Days.Models;
 public class Lab
 {
     public Grid<char> Map { get; set; } = new() { DefaultValue = '.' };
-    public Coordinate Guard {get; set; } = new(0, 0);
-    private readonly HashSet<string> visited = [];
-    private readonly Dictionary<string, Direction> path = [];
-    private readonly List<string> corner = [];
+    public Coordinate Guard { get; set; } = new(0, 0);
+    private Dictionary<string, Direction> Path = [];
 
-    public double Width {get; set; }
-    public double Height {get; set; }
-
+    public double Width { get; set; }
+    public double Height { get; set; }
 
     public Lab(string filename)
     {
@@ -40,124 +37,91 @@ public class Lab
         Height = y;
     }
 
-    public int GetCornerCount()
+    public int GetObstacleCount()
     {
-        var potentialLoopPoints = new List<string>();
-        List<Coordinate> cornerList = [new Coordinate(Guard.X, Guard.Y)];
-        
+        var count = 0;
 
-        var direction = Direction.Up;
-        do
+        var path = IdentifyPath(Guard.X, Guard.Y);
+
+        foreach (var point in path)
         {
-            // Add to path (if not already there)
-            if (!path.ContainsKey(Guard.ToString()))
+            Map.Set(point.Key, '#');
+            if (IsLoop(Guard.X, Guard.Y))
             {
-                path.Add(Guard.ToString(), direction);
+                count++;
             }
-
-
-            var potentialObstacleAhead = false;
-
-
-            // Crossed an existing path
-            if (path[Guard.ToString()] == TurnRight(direction))
-            {
-                potentialObstacleAhead = true;
-            }
-
-            // Check everything to the right, if it comes across something that is already in the path and is going the same way then add obstacle
-            var continueCheck = true;
-            var ptr = new Coordinate(Guard.ToString());
-            var tmpDir = TurnRight(direction);
-            do
-            {
-                ptr.Move(tmpDir);
-                if (path.ContainsKey(ptr.ToString()) && (path[ptr.ToString()] == tmpDir || path[ptr.ToString()] == TurnRight(tmpDir)))
-                {
-                    continueCheck = false;
-                    potentialObstacleAhead = true;
-                }
-                if (Map.Get(ptr) != '.' || !InsideLab(ptr))
-                {
-                    continueCheck = false;
-                }
-            } while (continueCheck);
-
-            if (potentialObstacleAhead)
-            {
-                var obstacle = new Coordinate(Guard.ToString());
-                obstacle.Move(direction);
-                if (Map.Get(obstacle) == '.')
-                {
-                    potentialLoopPoints.Add(obstacle.ToString());
-                }
-            }
-
-            // Move Guard
-            var peek = Guard.Peek(direction);
-            if (Map.Get(peek) == '.')
-            {
-                Guard.Move(direction);
-                continue;
-            }
-            direction = TurnRight(direction);
-            path[Guard.ToString()] = direction;
-
-
-        } while (InsideLab(Guard));
-
-        var count = potentialLoopPoints.Distinct().Count();
+            
+            Map.Remove(point.Key);
+        }
 
         return count;
     }
 
     public int GetDistinctPositionCount()
     {
-        visited.Clear();
+        Path = IdentifyPath(Guard.X, Guard.Y);
+        return Path.Count;
+    }
+
+    public Dictionary<string, Direction> IdentifyPath(double x, double y)
+    {
+        var path = new Dictionary<string, Direction>();
         var direction = Direction.Up;
+        var guard = new Coordinate(x, y);
+        
         do
         {
-            visited.Add(Guard.ToString());
-            var peek = Guard.Peek(direction);
+            if (!path.ContainsKey(guard.ToString()))
+            {
+                path.Add(guard.ToString(), direction);
+            }
+            var peek = guard.Peek(direction);
             if (Map.Get(peek) == '.')
             {
-                Guard.Move(direction);
+                guard.Move(direction);
                 continue;
             }
             direction = TurnRight(direction);
-        } while (InsideLab(Guard));
+        } while (InsideLab(guard));
+        return path;
+    }
 
-        return visited.Count;
+    public bool IsLoop(double x, double y)
+    {
+        var path = new Dictionary<string, Direction>();
+        var direction = Direction.Up;
+        var guard = new Coordinate(x, y);
+        var samePathCount = 0;
+        
+        do
+        {
+            if (!path.ContainsKey(guard.ToString()))
+            {
+                samePathCount = 0;
+                path.Add(guard.ToString(), direction);
+            }
+            else
+            {
+                if (path[guard.ToString()] == direction)
+                {
+                    samePathCount++;
+                }
+            }
+            var peek = guard.Peek(direction);
+            if (Map.Get(peek) == '.')
+            {
+                guard.Move(direction);
+                continue;
+            }
+            direction = TurnRight(direction);
+        } while (InsideLab(guard) && samePathCount <= 10);
+
+        return samePathCount > 10;
     }
 
     public bool InsideLab(Coordinate pos)
     {
         return !(pos.X < 0 || pos.X >= Width) && !(pos.Y < 0 || pos.Y >= Height);
-    }
-
-    public override string ToString()
-    {
-        var sb = new StringBuilder();
-        for(var y = 0; y < Height; y++)
-        {
-            for (var x = 0; x < Width; x++)
-            {
-                if (Guard.X == x && Guard.Y == y)
-                {
-                    sb.Append('G');
-                    continue;
-                }
-                var c = new Coordinate(x, y);
-                if (visited.Contains(c.ToString()))
-                {
-                    sb.Append('X');
-                    continue;
-                }
-                sb.Append(Map.Get(c));
-            }
-            sb.AppendLine();
-        }
-        return sb.ToString();
     }
 
     private static Direction TurnRight(Direction direction)

@@ -7,10 +7,10 @@ public static class Day6
 {
     public static void Run()
     {
-        PartTwo("./Days/Data/6.S.txt");
-        PartTwo("./Days/Data/6.txt");
         PartOne("./Days/Data/6.S.txt");
         PartOne("./Days/Data/6.txt");
+        PartTwo("./Days/Data/6.S.txt");
+        PartTwo("./Days/Data/6.txt");
     }
 
     public static void PartOne(string filename)
@@ -23,7 +23,7 @@ public static class Day6
     public static void PartTwo(string filename)
     {
         var lab = new Lab(filename);
-        var count = lab.GetCornerCount();
+        var count = lab.GetObstacleCount();
         Console.WriteLine(count);
     }
 }
