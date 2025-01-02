@@ -34,6 +34,16 @@ public class Grid<T>() where T : new ()
         return Get(new Coordinate(X, Y));
     }
 
+    public T? Get(string coord)
+    {
+        return Get(new Coordinate(coord));
+    }
+
+    public void Set(string coord, T value)
+    {
+        Set(new Coordinate(coord), value);
+    }
+
     public void Set(Coordinate coord, T value)
     {
         BottomRight.Y = coord.Y > BottomRight.Y ? coord.Y : BottomRight.Y;
@@ -44,6 +54,11 @@ public class Grid<T>() where T : new ()
         {
             Storage[coord.ToString()] = value;
         }
+    }
+
+    public void Remove(string coord)
+    {
+        Remove(new Coordinate(coord));
     }
 
     public void Remove(Coordinate coord)
